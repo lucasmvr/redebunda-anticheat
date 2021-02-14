@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 
 class Logo(Label):
-    def __init__(self, master=None):
+    def __init__(self, master):
         load = Image.open('./assets/logo.png')
         load = load.resize((80,80))
         self.render = ImageTk.PhotoImage(load)
