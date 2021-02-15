@@ -25,7 +25,6 @@ class Socket(threading.Thread):
         global nick
         nick = nickname
         conn.connect('http://127.0.0.1:5000')
-        print(conn.get_sid())
         return conn.sid
     
     def getSid(self):

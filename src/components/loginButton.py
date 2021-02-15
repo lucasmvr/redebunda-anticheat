@@ -33,9 +33,12 @@ class LoginButton(tk.Button):
             return
         
         try:
-            self.parent.spy.start()
-        except Exception:
-            messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do módulo de monitoramento.')
+            self.parent.spy.start(self.parent.pathDescriptor.cget('text'))
+        except Exception as e:
+            if str(e) == 'ERROR_PATH':
+                messagebox.showerror('Ops...', 'Parece que você selecionou a pasta de instalação errada.')
+            else:
+                messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do módulo de monitoramento.')
             return
 
         try:
