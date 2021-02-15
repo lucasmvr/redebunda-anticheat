@@ -21,5 +21,6 @@ class DirectorySelector(tk.Label):
         self.bind('<Button-1>', self.click)
     
     def click(self, event):
+        if self.cget('state') == tk.DISABLED: return
         path = askdirectory()
         self.parent.pathDescriptor.config(text=path)
