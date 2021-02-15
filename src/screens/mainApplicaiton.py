@@ -43,3 +43,11 @@ class MainApplicaiton(tk.Frame):
 
         self.socket = Socket()
         self.socketStarted = False
+        
+        self.connectText = tk.Text(height=1, highlightthickness=0)
+        self.connectText.tag_configure('center', justify='center')
+        self.connectText.grid(row=4, column=0, columnspan=3, padx=50)
+
+        self.sidText = tk.Text(height=1, highlightthickness=0)
+        self.sidText.tag_configure('center', justify='center')
+        self.sidText.grid(row=5, column=0, columnspan=3, padx=50)
