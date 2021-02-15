@@ -9,6 +9,8 @@ from screens.header import Header
 
 from static.constants import Constants
 
+from services.socket import Socket
+
 class MainApplicaiton(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(
@@ -25,8 +27,8 @@ class MainApplicaiton(tk.Frame):
 
         self.nickLabel = tk.Label(self, text='Nickname: ', font=const.FONT_LABEL)
         self.nickInput = TextInput(self)
-        self.nickLabel.grid(row=1, column=0, pady=5)
-        self.nickInput.grid(row=1, column=1, columnspan=2, pady=5)
+        self.nickLabel.grid(row=1, column=0)
+        self.nickInput.grid(row=1, column=1, columnspan=2)
     
         self.pathLabel = tk.Label(self, text='Pasta de instalção\ndo C.S. 1.6:', font=const.FONT_LABEL)
         self.pathDescriptor = tk.Label(self, width='15')
@@ -37,4 +39,7 @@ class MainApplicaiton(tk.Frame):
 
         
         self.loginButton = LoginButton(self, font=const.FONT_LABEL)
-        self.loginButton.grid(row=3, column=0, columnspan=3, pady=5)
+        self.loginButton.grid(row=3, column=0, columnspan=3)
+
+        self.socket = Socket()
+        self.socketStarted = False

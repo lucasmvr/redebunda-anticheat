@@ -1,9 +1,13 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import socketio, threading
 
 # todo send info to server
-def click(event):
-    print(event)
+
+def click(event, parent):
+    parent.socket.start()
+    parent.socketStarted = True
+    parent.socket.teste(parent.nickInput.get())
 
 
 class LoginButton(tk.Button):
@@ -19,5 +23,5 @@ class LoginButton(tk.Button):
             *args,
             **kwargs
         )
-
-        self.bind('<Button-1>', click)
+        self.parent = root
+        self.bind('<Button-1>', lambda x: click(x, self.parent))
