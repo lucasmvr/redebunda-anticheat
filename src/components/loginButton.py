@@ -27,6 +27,10 @@ class LoginButton(tk.Button):
         if not self.parent.nickInput.get() or self.parent.nickInput.get().split(' ')[0] == '':
             messagebox.showinfo('Calma lá!', 'Você ainda não digitou seu nickname! (:')
             return
+        
+        if not self.parent.codInput.get() or self.parent.codInput.get().split(' ')[0] == '':
+            messagebox.showinfo('Calma lá!', 'Você ainda não digitou o código do seu jogo. (:')
+            return
 
         if not self.parent.pathDescriptor.cget('text'):
             messagebox.showinfo('Calma lá!', 'Você precisa selecionar a pasta de instalação do jogo. (:')
@@ -44,7 +48,7 @@ class LoginButton(tk.Button):
         try:
             self.parent.socket.start()
             self.parent.socketStarted = True
-            self.parent.socket.connectSocket(self.parent.nickInput.get())
+            self.parent.socket.connectSocket(self.parent.nickInput.get(), self.parent.codInput.get())
         except Exception:
             messagebox.showerror('Ops...', 'Ocorreu um erro ao se conectar com o servidor.')
             if self.parent.socketStarted:
@@ -59,9 +63,10 @@ class LoginButton(tk.Button):
         self.parent.connectText.tag_add('center', 1.0, 'end')
         self.parent.spyText.insert(1.0, 'Você está sendo monitorado xD')
         self.parent.spyText.tag_add('center', 1.0, 'end')
-        self.parent.connectText.grid(row=4, column=0, columnspan=3, padx=50)
-        self.parent.spyText.grid(row=5, column=0, columnspan=3, padx=50)
-        self.parent.bundaIdBtn.grid(row=6, column=0, columnspan=3, pady=3)
+        self.parent.connectText.grid(row=5, column=0, columnspan=3, padx=50)
+        self.parent.spyText.grid(row=6, column=0, columnspan=3, padx=50)
+        self.parent.bundaIdBtn.grid(row=7, column=0, columnspan=3, pady=3)
         self.configure(state=tk.DISABLED)
         self.parent.nickInput.configure(state=tk.DISABLED)
         self.parent.pathInput.configure(state=tk.DISABLED)
+        self.parent.codInput.configure(state=tk.DISABLED)

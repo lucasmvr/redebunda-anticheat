@@ -5,11 +5,12 @@ import os
 from services.api import Api
 
 global api
-api = Api()
 class Spy():
-    def __init__(self):
+    def __init__(self, socket):
+        global api
+        api = Api()
         self.spy = Observer()
-        self.api = Api()
+        self.socket = socket
     
     def start(self, path):
         if not os.path.isfile(path+'/cstrike/config.cfg'):
@@ -17,7 +18,7 @@ class Spy():
         
         self.handler = PatternMatchingEventHandler([path+'/cstrike/config.cfg'], '', True, True)
         self.handler.on_deleted = self.on_deleted
-        self.handler.on_modified = self.on_modified
+        self.handler.on_modified = lambda x: self.on_modified(x, self)
         
         self.spy.schedule(self.handler, path+'/cstrike')
         self.spy.start()
@@ -30,7 +31,9 @@ class Spy():
         print(f"what the f**k! Someone deleted {event.src_path}!")
 
     @staticmethod
-    def on_modified(event):
+    def on_modified(event, spy):
         print('Ora ora, parece que alguem mudou a cfg....')
         with open(event.src_path, 'r') as file:
-            api.sendConfig(file.read())
+            payload = spy.socket.getData()
+            payload['config'] = file.read()
+            api.sendConfig(payload)

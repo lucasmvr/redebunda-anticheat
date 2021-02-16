@@ -1,6 +1,6 @@
 import socketio, threading
 
-global conn, nick
+global conn, nick, cod
 conn = socketio.Client()
 sid = conn.get_sid()
 
@@ -11,9 +11,9 @@ class Socket(threading.Thread):
     @staticmethod
     @conn.event
     def connect():
-        global nick, sid
+        global nick, sid, cod
         print('Connected!')
-        conn.emit('join', {'nickname': nick})
+        conn.emit('join', {'nickname': nick, 'codigo': cod})
         sid = conn.get_sid()
     
     def join(self):
@@ -21,13 +21,18 @@ class Socket(threading.Thread):
         print('Disconnected!')
         super().join()
     
-    def connectSocket(self, nickname):
-        global nick
+    def connectSocket(self, nickname, codigo):
+        global nick, cod
         nick = nickname
+        cod = codigo
         conn.connect('http://127.0.0.1:5000')
         return conn.sid
     
-    def getSid(self):
-        global sid
-        return sid
+    def getData(self):
+        global sid, nick, cod
+        return {
+            'bundaId': sid,
+            'nickname': nick,
+            'codigo': cod
+        }
     

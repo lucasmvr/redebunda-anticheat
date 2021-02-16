@@ -9,12 +9,12 @@ class Header(tk.Frame):
             self,
             root,
         )
-        self.grid(row=0, column=0, pady=20)
+        self.grid(row=0, column=0, pady=13)
 
         const = Constants(root)
         
         self.logo = Logo(self)
-        self.logoLabel = tk.Label(self, text='Bem vindo ao antibatota\n da Rede Bunda!', font=const.FONT_MAIN)
+        self.logoLabel = tk.Label(self, text='Bem vindo ao VAR\n da Rede Bunda!', font=const.FONT_MAIN)
 
         self.logo.grid(row=0, column=0)
         self.logoLabel.grid(row=1, column=0)

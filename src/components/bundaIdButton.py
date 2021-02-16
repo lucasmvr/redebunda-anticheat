@@ -21,4 +21,4 @@ class BundaIdButton(tk.Button):
         self.bind('<Button-1>', self.click)
     
     def click(self, event):
-        messagebox.showinfo('Bunda ID', 'Seu Bunda ID é:\n'+self.parent.socket.getSid())
+        messagebox.showinfo('Bunda ID', 'Seu Bunda ID é:\n'+self.parent.socket.getData()['bundaId'])

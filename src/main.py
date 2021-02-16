@@ -5,7 +5,7 @@ from screens.mainApplicaiton import MainApplicaiton
 import threading
 
 root = tk.Tk()
-root.title('Rede Bunda - Antibatota xD')
+root.title('Rede Bunda - VAR xD')
 root.geometry('400x450')
 root.resizable(False, False)
 photo = tk.PhotoImage(file='./assets/logo.png')
