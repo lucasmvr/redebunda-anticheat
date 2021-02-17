@@ -1,6 +1,5 @@
 import tkinter as tk
-from PIL import Image, ImageTk
-import socketio, threading
+import os
 
 from tkinter import messagebox
 
@@ -35,28 +34,46 @@ class LoginButton(tk.Button):
         if not self.parent.pathDescriptor.cget('text'):
             messagebox.showinfo('Calma lá!', 'Você precisa selecionar a pasta de instalação do jogo. (:')
             return
-        
-        try:
-            self.parent.spy.start(self.parent.pathDescriptor.cget('text'))
-        except Exception as e:
-            if str(e) == 'ERROR_PATH':
-                messagebox.showerror('Ops...', 'Parece que você selecionou a pasta de instalação errada.')
-            else:
-                messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do módulo de monitoramento.')
-            return
+
+        os.environ['redebunda-anticheat-nickname'] = self.parent.nickInput.get()
+        os.environ['redebunda-anticheat-codigo'] = self.parent.codInput.get()
+        os.environ['redebunda-anticheat-csPath'] = self.parent.pathDescriptor.cget('text')
 
         try:
             self.parent.socket.start()
             self.parent.socketStarted = True
-            self.parent.socket.connectSocket(self.parent.nickInput.get(), self.parent.codInput.get())
-        except Exception:
+            self.parent.socket.connectSocket()
+        except Exception as e:
+            print(e)
             messagebox.showerror('Ops...', 'Ocorreu um erro ao se conectar com o servidor.')
-            if self.parent.socketStarted:
-                self.parent.socket.join()
-                self.parent.spy.stop()
             self.parent.socketStarted = False
             self.parent.connectText.insert(1.0, 'Não foi possível se conectar.')
             self.parent.connectText.tag_add('center', 1.0, 'end')
+            return
+        
+        try:
+            self.parent.spy.start(os.environ['redebunda-anticheat-csPath'])
+            self.parent.spyStarted = True
+        except Exception as e:
+            print(e)
+            if str(e) == 'ERROR_PATH':
+                messagebox.showerror('Ops...', 'Parece que você selecionou a pasta de instalação errada.')
+            else:
+                messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do módulo de monitoramento.')
+            self.parent.socket.join()
+            self.parent.socketStarted = False
+            return
+        
+        try:
+            self.parent.screenCapture.start()
+            self.parent.screenStarted = True
+        except Exception as e:
+            print(e)
+            messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do VAR.')
+            self.parent.socket.join()
+            self.parent.socketStarted = False
+            self.parent.spy.stop()
+            self.parent.spyStarted = True
             return
 
         self.parent.connectText.insert(1.0, 'Conectado com o servidor!')

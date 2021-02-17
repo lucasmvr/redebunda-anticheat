@@ -15,21 +15,24 @@ from services.socket import Socket
 from services.spy import Spy
 from services.screenCapture import ScreenCapture
 
-class MainApplicaiton(tk.Frame):
+import multiprocessing
+
+class MainApplication(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(
             self, 
             root,
             )
         self.grid(row=0, column=0)
-        ScreenCapture()
 
         const = Constants(root)
         self.socket = Socket()
         self.socketStarted = False
+        self.spy = Spy()
+        self.spyStarted = False
+        self.screenCapture = ScreenCapture()
+        self.screenStarted = False
 
-        self.spy = Spy(self.socket)
-        
         self.header = Header(self)
         self.header.grid(row=0, column=0, columnspan=3)
 

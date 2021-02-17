@@ -8,11 +8,13 @@ class Api():
     def sendConfig(self, data):
         result = requests.post(
             self.baseUrl+'/config',
-            json={
-                'data': data['config'],
-                'nickname': data['nickname'],
-                'bundaId': data['bundaId'],
-                'codigo': data['codigo']
-            })
+            json=data)
+        return result.status_code == 200
+    
+    def sendScreenshot(self, data, image):
+        result = requests.post(
+            self.baseUrl+'/screenshot?nickname={nickname}&bundaId={bundaId}&codigo={codigo}'.format_map(data),
+            data=image
+        )
         return result.status_code == 200
     

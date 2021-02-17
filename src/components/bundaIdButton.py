@@ -1,6 +1,5 @@
 import tkinter as tk
-from PIL import Image, ImageTk
-import socketio, threading
+import os
 
 from tkinter import messagebox
 
@@ -17,8 +16,7 @@ class BundaIdButton(tk.Button):
             *args,
             **kwargs
         )
-        self.parent = root
         self.bind('<Button-1>', self.click)
     
     def click(self, event):
-        messagebox.showinfo('Bunda ID', 'Seu Bunda ID é:\n'+self.parent.socket.getData()['bundaId'])
+        messagebox.showinfo('Bunda ID', 'Seu Bunda ID é:\n'+os.environ['redebunda-anticheat-bundaId'])

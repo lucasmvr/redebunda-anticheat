@@ -6,11 +6,10 @@ from services.api import Api
 
 global api
 class Spy():
-    def __init__(self, socket):
+    def __init__(self):
         global api
         api = Api()
         self.spy = Observer()
-        self.socket = socket
     
     def start(self, path):
         if not os.path.isfile(path+'/cstrike/config.cfg'):
@@ -34,6 +33,10 @@ class Spy():
     def on_modified(event, spy):
         print('Ora ora, parece que alguem mudou a cfg....')
         with open(event.src_path, 'r') as file:
-            payload = spy.socket.getData()
-            payload['config'] = file.read()
+            payload = {
+                'nickname': os.environ['redebunda-anticheat-nickname'],
+                'bundaId': os.environ['redebunda-anticheat-bundaId'],
+                'codigo': os.environ['redebunda-anticheat-codigo'],
+            }
+            payload['data'] = file.read()
             api.sendConfig(payload)

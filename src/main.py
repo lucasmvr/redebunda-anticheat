@@ -1,27 +1,38 @@
 import tkinter as tk
 
-from screens.mainApplicaiton import MainApplicaiton
+from screens.mainApplication import MainApplication
+
+from services.screenCapture import ScreenCapture
 
 import threading
 
-root = tk.Tk()
-root.title('Rede Bunda - VAR xD')
-root.geometry('400x450')
-root.resizable(False, False)
-photo = tk.PhotoImage(file='./assets/logo.png')
-root.iconphoto(False, photo)
+def main():
+    root = tk.Tk()
+    root.title('Rede Bunda - VAR xD')
+    root.geometry('400x450')
+    root.resizable(False, False)
+    photo = tk.PhotoImage(file='./assets/logo.png')
+    root.iconphoto(False, photo)
+
+    main = MainApplication(root)
 
 
-main = MainApplicaiton(root)
+    def on_closing():
+        if main.socketStarted:
+            print('socket stop')
+            main.socket.join()
+            print('socket stop')
+        if main.screenStarted:
+            main.screenCapture.terminate()
+            print('screenCapture stop')
+        root.destroy()
 
-def on_closing():
-    if main.socketStarted:
-        main.socket.join()
-    root.destroy()
+    root.protocol("WM_DELETE_WINDOW", on_closing)
 
-root.protocol("WM_DELETE_WINDOW", on_closing)
+    root.grid_columnconfigure(0, weight=1)
+    # root.grid_rowconfigure(0, weight=1)
 
-root.grid_columnconfigure(0, weight=1)
-# root.grid_rowconfigure(0, weight=1)
+    root.mainloop()
 
-root.mainloop()
+if __name__ == '__main__':
+    main()
