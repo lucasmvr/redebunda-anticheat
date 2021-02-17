@@ -20,7 +20,7 @@ def main():
     def on_closing():
         if main.socketStarted:
             print('socket stop')
-            main.socket.join()
+            main.socket.disconnect()
             print('socket stop')
         if main.screenStarted:
             main.screenCapture.terminate()

@@ -55,9 +55,6 @@ class MainApplication(tk.Frame):
 
         self.loginButton = LoginButton(self, font=const.FONT_LABEL)
         self.loginButton.grid(row=4, column=0, columnspan=3, pady=(0, 10))
-        
-        self.connectText = InfoText(self)
 
-        self.spyText = InfoText(self)
-        
+        self.loggedText = InfoText(self)
         self.bundaIdBtn = BundaIdButton(self, font=const.FONT_LABEL)

@@ -3,10 +3,7 @@ import socketio, threading, os
 global conn
 conn = socketio.Client()
 
-class Socket(threading.Thread):
-    def __init__(self):
-        super().__init__()
-    
+class Socket():
     @staticmethod
     @conn.event
     def connect():
@@ -16,11 +13,10 @@ class Socket(threading.Thread):
             'codigo': os.environ['redebunda-anticheat-codigo']
         })
         os.environ['redebunda-anticheat-bundaId'] = conn.get_sid()
-    
-    def join(self):
+
+    def disconnect(self):
         conn.disconnect()
         print('Disconnected!')
-        super().join()
     
     def connectSocket(self):
         conn.connect('http://127.0.0.1:5000')

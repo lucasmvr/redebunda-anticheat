@@ -19,7 +19,6 @@ class LoginButton(tk.Button):
         self.parent = root
         self.bind('<Button-1>', self.click)
     
-    # todo send info to server
     def click(self, event):
         if self.cget('state') == tk.DISABLED: return
 
@@ -40,11 +39,12 @@ class LoginButton(tk.Button):
         os.environ['redebunda-anticheat-csPath'] = self.parent.pathDescriptor.cget('text')
 
         try:
-            self.parent.socket.start()
-            self.parent.socketStarted = True
             self.parent.socket.connectSocket()
+            self.parent.socketStarted = True
         except Exception as e:
             print(e)
+            if self.parent.socketStarted:
+                self.parent.socket.disconnect()
             messagebox.showerror('Ops...', 'Ocorreu um erro ao se conectar com o servidor.')
             self.parent.socketStarted = False
             self.parent.connectText.insert(1.0, 'Não foi possível se conectar.')
@@ -52,7 +52,7 @@ class LoginButton(tk.Button):
             return
         
         try:
-            self.parent.spy.start(os.environ['redebunda-anticheat-csPath'])
+            self.parent.spy.start()
             self.parent.spyStarted = True
         except Exception as e:
             print(e)
@@ -60,7 +60,7 @@ class LoginButton(tk.Button):
                 messagebox.showerror('Ops...', 'Parece que você selecionou a pasta de instalação errada.')
             else:
                 messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do módulo de monitoramento.')
-            self.parent.socket.join()
+            self.parent.socket.disconnect()
             self.parent.socketStarted = False
             return
         
@@ -70,20 +70,31 @@ class LoginButton(tk.Button):
         except Exception as e:
             print(e)
             messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do VAR.')
-            self.parent.socket.join()
+            self.parent.socket.disconnect()
             self.parent.socketStarted = False
             self.parent.spy.stop()
             self.parent.spyStarted = True
             return
+        
+        self.logged_app()
 
-        self.parent.connectText.insert(1.0, 'Conectado com o servidor!')
-        self.parent.connectText.tag_add('center', 1.0, 'end')
-        self.parent.spyText.insert(1.0, 'Você está sendo monitorado xD')
-        self.parent.spyText.tag_add('center', 1.0, 'end')
-        self.parent.connectText.grid(row=5, column=0, columnspan=3, padx=50)
-        self.parent.spyText.grid(row=6, column=0, columnspan=3, padx=50)
+    def logged_app(self):
+        self.parent.nickLabel.grid_remove()
+        self.parent.nickInput.grid_remove()
+        self.parent.codLabel.grid_remove()
+        self.parent.codInput.grid_remove()
+        self.parent.pathLabel.grid_remove()
+        self.parent.pathDescriptor.grid_remove()
+        self.parent.pathInput.grid_remove()
+        self.parent.loginButton.grid_remove()
+
+        self.parent.header.logoLabel.configure(text='Bem vindo ao VAR\n da Rede Bunda, {}!'.format(os.environ['redebunda-anticheat-nickname']))
+        self.parent.loggedText.insert(
+            1.0,
+            'Você está conectado com o servidor!\n\nSeu jogo é {}\n\nSua pasta de instalação do C.S. 1.6 é \n{}\n\nVocê está sendo monitorado xD'.format(
+                os.environ['redebunda-anticheat-codigo'],
+                os.environ['redebunda-anticheat-csPath']
+            ))
+        self.parent.loggedText.tag_add('center', 1.0, 'end')
+        self.parent.loggedText.grid(row=1, column=0, columnspan=3, padx=50, pady=7)
         self.parent.bundaIdBtn.grid(row=7, column=0, columnspan=3, pady=3)
-        self.configure(state=tk.DISABLED)
-        self.parent.nickInput.configure(state=tk.DISABLED)
-        self.parent.pathInput.configure(state=tk.DISABLED)
-        self.parent.codInput.configure(state=tk.DISABLED)

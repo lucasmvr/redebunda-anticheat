@@ -11,12 +11,14 @@ class ScreenCapture(multiprocessing.Process):
     def snapshot(self):
         created = False
         try:
+            os.makedirs(os.environ['redebunda-anticheat-csPath']+'/cstrike/redebunda-anticheat', exist_ok=True)
+            filePath = os.environ['redebunda-anticheat-csPath']+'/cstrike/redebunda-anticheat/{}_screenshot.png'.format(datetime.now().strftime('%Y-%m-%sT%H:%M:%S'))
             snapshot = ImageGrab.grab(all_screens=True)
-            filename = './teste/{}_pego_no_pulo.png'.format(datetime.now().strftime('%Y-%m-%sT%H:%M:%S'))
-            snapshot.save(filename)
+            snapshot.save(filePath)
+            created = True
 
             image = None
-            with open(filename, 'rb') as t:
+            with open(filePath, 'rb') as t:
                 image = t.read()
 
             Api().sendScreenshot({
@@ -28,8 +30,7 @@ class ScreenCapture(multiprocessing.Process):
             print(e)
         finally:
             if created:
-                # todo deletar arquivo
-                pass
+                os.remove(filePath)
 
     def run(self):
         while True:

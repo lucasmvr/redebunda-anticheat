@@ -6,7 +6,7 @@ class InfoText(tk.Text):
         tk.Text.__init__(
             self,
             root,
-            height=1,
+            height=15,
             highlightthickness=0,
             width=42,
             *args,

@@ -11,7 +11,8 @@ class Spy():
         api = Api()
         self.spy = Observer()
     
-    def start(self, path):
+    def start(self):
+        path = os.environ['redebunda-anticheat-csPath']
         if not os.path.isfile(path+'/cstrike/config.cfg'):
             raise Exception('ERROR_PATH')
         
