@@ -4,14 +4,16 @@ from screens.mainApplication import MainApplication
 
 from services.screenCapture import ScreenCapture
 
-import threading
+from utils.path import resource_path
+
+import threading, os, sys
 
 def main():
     root = tk.Tk()
     root.title('Rede Bunda - VAR xD')
     root.geometry('400x450')
     root.resizable(False, False)
-    photo = tk.PhotoImage(file='./assets/logo.png')
+    photo = tk.PhotoImage(file=resource_path('assets/logo.png'))
     root.iconphoto(False, photo)
 
     main = MainApplication(root)
