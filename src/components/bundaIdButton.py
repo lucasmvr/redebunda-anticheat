@@ -9,8 +9,6 @@ class BundaIdButton(tk.Button):
             self,
             root,
             text='Bunda ID',
-            highlightcolor='#000',
-            activeforeground='#AA1',
             pady=5,
             padx=5,
             *args,

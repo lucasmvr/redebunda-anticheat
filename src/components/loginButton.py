@@ -9,8 +9,6 @@ class LoginButton(tk.Button):
             self,
             root,
             text='Entrar',
-            highlightcolor='#000',
-            activeforeground='#AA1',
             pady=5,
             padx=5,
             *args,
@@ -64,17 +62,17 @@ class LoginButton(tk.Button):
             self.parent.socketStarted = False
             return
         
-        try:
-            self.parent.screenCapture.start()
-            self.parent.screenStarted = True
-        except Exception as e:
-            print(e)
-            messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do VAR.')
-            self.parent.socket.disconnect()
-            self.parent.socketStarted = False
-            self.parent.spy.stop()
-            self.parent.spyStarted = True
-            return
+        # try:
+        #     self.parent.screenCapture.start()
+        #     self.parent.screenStarted = True
+        # except Exception as e:
+        #     print(e)
+        #     messagebox.showerror('Ops...', 'Ocorreu um erro na inicialização do VAR.')
+        #     self.parent.socket.disconnect()
+        #     self.parent.socketStarted = False
+        #     self.parent.spy.stop()
+        #     self.parent.spyStarted = True
+        #     return
         
         self.logged_app()
 
